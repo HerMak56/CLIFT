@@ -29,5 +29,5 @@ services:
               capabilities: ["gpu"]
 
     volumes:
-      - ..:/home/oversir/workspace
-      - /mnt/vol0/datasets/jrdb:/home/oversir/workspace/DCCLA/data/JRDB2019
+      - ..:/home/capitan/workspace
+      - /mnt/vol0/datasets/jrdb:/home/capitan/workspace/DCCLA/data/JRDB2019
