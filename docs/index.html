@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLIFT — Contrastive LiDAR Instance Features for 3D Pedestrian Tracking</title>
+<meta name="description" content="CLIFT turns a 3D LiDAR detector into a tracker with an instance-level contrastive objective on its intermediate voxel features. ACCV 2026.">
+<style>
+  :root{
+    --bg:#ffffff; --fg:#1a1d21; --muted:#5c6670; --line:#e3e8ee;
+    --accent:#0b5fa5; --accent-soft:#eef5fc; --card:#f7f9fb;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#15181c; --fg:#e8ecf0; --muted:#9aa5b1; --line:#2a3038;
+           --accent:#6cb0f0; --accent-soft:#1a2733; --card:#1b1f25; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+       font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+  header{padding:72px 0 44px;border-bottom:1px solid var(--line);text-align:center}
+  .badge{display:inline-block;background:var(--accent-soft);color:var(--accent);
+         font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;
+         padding:6px 14px;border-radius:999px;margin-bottom:22px}
+  h1{font-size:34px;line-height:1.25;margin:0 0 6px;letter-spacing:-.02em}
+  h1 .sub{display:block;font-size:20px;font-weight:500;color:var(--muted);
+          margin-top:10px;letter-spacing:0}
+  .authors{color:var(--muted);font-size:15px;margin-top:22px}
+  .links{margin-top:28px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .links a,.links span{display:inline-block;padding:9px 18px;border-radius:7px;
+       font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--line)}
+  .links a{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .links a:hover{filter:brightness(1.08)}
+  .links span{color:var(--muted);background:transparent}
+  section{padding:40px 0;border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:none}
+  h2{font-size:19px;margin:0 0 16px;letter-spacing:-.01em}
+  p{margin:0 0 14px}
+  .abstract{color:var(--fg);text-align:justify}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:4px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:16px 18px}
+  .stat .n{font-size:26px;font-weight:700;color:var(--accent);letter-spacing:-.02em}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:3px}
+  ul{margin:0;padding-left:20px}
+  li{margin:7px 0}
+  .notice{background:var(--card);border:1px solid var(--line);
+          border-left:3px solid var(--accent);border-radius:7px;padding:16px 20px;
+          color:var(--muted);font-size:15px}
+  .notice strong{color:var(--fg)}
+  footer{padding:32px 0 56px;color:var(--muted);font-size:13.5px;text-align:center}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;
+       padding:1px 5px;font-size:13.5px}
+  @media (max-width:600px){
+    header{padding:52px 0 36px} h1{font-size:26px} h1 .sub{font-size:17px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="badge">Accepted at ACCV 2026</div>
+    <h1>CLIFT
+      <span class="sub">Contrastive LiDAR Instance Features for 3D Pedestrian Tracking</span>
+    </h1>
+    <div class="authors">Author list to appear with the camera-ready version</div>
+    <div class="links">
+      <span>Paper — coming soon</span>
+      <span>Code — coming soon</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <h2>Abstract</h2>
+    <p class="abstract">A social robot has to keep track of the people around it over time to
+    plan its motion — a task handled by 3D multi-object tracking. For the LiDAR modality,
+    trackers usually sit on top of a detector and link its detections across frames with a
+    separate motion model or re-identification network. We instead show how a 3D LiDAR
+    detector itself can be turned into a tracker by adding an instance-level contrastive
+    objective on its intermediate voxel features. Each embedding is read from the voxels
+    inside a detected box, and boxes are matched across frames by cosine similarity and the
+    Hungarian algorithm, without a motion model. The detector backbone is fine-tuned together
+    with this objective under a gradient rule that keeps detection accuracy intact while
+    learning identity-aware features. Because the method uses only the voxel features that
+    LiDAR detectors already produce, it is backbone-agnostic.</p>
+  </section>
+
+  <section>
+    <h2>Results on the JRDB 3D tracking benchmark</h2>
+    <div class="grid">
+      <div class="stat"><div class="n">38.58</div><div class="l">HOTA — 1st place</div></div>
+      <div class="stat"><div class="n">37.99</div><div class="l">IDF1 — 1st place</div></div>
+      <div class="stat"><div class="n">+13.04</div><div class="l">HOTA over the next published method</div></div>
+      <div class="stat"><div class="n">+9.30</div><div class="l">IDF1 over the next published method</div></div>
+    </div>
+    <p style="margin-top:16px;color:var(--muted);font-size:14.5px">Second on MOTA and OSPA.
+    LiDAR-only — no camera fusion, no motion model, no separate re-identification network.</p>
+  </section>
+
+  <section>
+    <h2>Method in brief</h2>
+    <ul>
+      <li>Embeddings are pooled from the voxels inside each box, reusing features the
+          detector already computes — no additional ReID encoder.</li>
+      <li>Association is cosine similarity plus Hungarian matching, with no motion model.</li>
+      <li>The backbone is fine-tuned jointly with the contrastive objective, so detection
+          accuracy is preserved while the features become identity-aware.</li>
+      <li>Nothing in the approach is specific to one detector: it needs only intermediate
+          voxel features, which LiDAR detectors produce anyway.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Code and data</h2>
+    <p class="notice"><strong>Coming soon.</strong> Training and inference code, configuration
+    files, pre-trained checkpoints and evaluation scripts will be released on this page after
+    the camera-ready version is finalised.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    CLIFT · Asian Conference on Computer Vision (ACCV) 2026
+  </div>
+</footer>
+
+</body>
+</html>
